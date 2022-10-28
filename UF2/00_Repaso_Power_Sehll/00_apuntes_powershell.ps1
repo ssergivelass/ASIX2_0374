@@ -134,3 +134,15 @@ Clear
 Get-Date
 #En este punto del codigo hacemos referencia a la funcion  que hemos declarado al pricipio del script.
 RequestName
+
+#Redireccion i Anexiones
+
+#Ejemplo 1:
+<#
+ # Esto comando crea un fichero de texto en la ruta especificada cuyo contenido es la ayuda del cmdlet get-command de Powershell.
+#>
+"ASIX2" > c:\redireccion.txt
+
+
+# Con la doble >> almacenamos el siguiente resultado en el siguiente salto de linea libre.
+"ASIX1" >> c:\redireccion.txt
