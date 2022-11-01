@@ -146,3 +146,48 @@ RequestName
 
 # Con la doble >> almacenamos el siguiente resultado en el siguiente salto de linea libre.
 "ASIX1" >> c:\redireccion.txt
+###########################################
+#TABJAR CON IMPORTACION DATOS EXTERNOS (CSV)
+<#
+ # Importamos el contenido del CSV en nuestro script, almacenandolo en un variable
+#Deberemos tener en cuenta el delimitador de nuestro CSV, por defecto Power Shell lo interpreta
+Como ",", pero en nuestro caso lo haremos con ";
+#>
+
+$CSV = Import-Csv "C:\usuarios.csv" -Delimiter ";"
+
+#Ahora recorremos todo el contenido del fichero mediante el foreach
+foreach ($LINEA in $CSV)
+{
+    "El ID: $($LINEA.ID), Nombre: $($LINEA.NOMBRE), su APELLIDO: $($LINEA.APELLIDO), NACIDO en: $($LINEA.LUGAR)"
+}
+
+<#
+ # Ahora vamos a mostrar el contenido en una lista, luego en una tabla.
+#>
+$CSV | Format-List
+#  |Observad que hemos utilizado la pleca ( | ) para comunicar un cmdlet con otro.
+$CSV | Format-Table
+<#
+ # En este caso vamos a almacenar los registros del CSV en un Array.
+#>
+$CSV = Import-Csv "C:\usuarios.csv" -Delimiter ";"
+$CSV
+#Mediante @() declaramos un Array vacia.
+$IDS = @()
+$NOMBRES = @()
+$AGE = @()
+$SITE = @()
+$CSV | ForEach-Object{
+$IDS += $_.ID
+$NOMBRES += $_.NOMBRE
+}
+#Analizamos cuantos valores tiene la Array
+$IDS.Length
+$IDS.Count #Es lo micmos que el length,
+for ($i = 0; $i -lt $IDS.Length; $i++)
+{ 
+    "El ID: $($IDS[$i]), Nombre: $($NOMBRES[$i]),"
+}
+
+
