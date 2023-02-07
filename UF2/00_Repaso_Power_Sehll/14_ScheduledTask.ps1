@@ -3,25 +3,25 @@
 (Get-Command -Module ScheduledTasks).Name
 <#
 #Cada uno de estos cmdlets nos permite realizar una tarea específica asociada a la tarea.
-Disable-ScheduledTask
-Enable-ScheduledTask
-Export-ScheduledTask
-Get-ClusteredScheduledTask
-Get-ScheduledTask
-Get-ScheduledTaskInfo
-New-ScheduledTask
-New-ScheduledTaskAction
-New-ScheduledTaskPrincipal
-New-ScheduledTaskSettingsSet
-New-ScheduledTaskTrigger
-Register-ClusteredScheduledTask
-Register-ScheduledTask
-Set-ClusteredScheduledTask
-Set-ScheduledTask
-Start-ScheduledTask
-Stop-ScheduledTask
-Unregister-ClusteredScheduledTask
-Unregister-ScheduledTask
+Disable-ScheduledTask: desactiva una tarea programada existente.
+Enable-ScheduledTask: activa una tarea programada existente.
+Export-ScheduledTask: exporta una tarea programada a un archivo XML para su uso posterior.
+Get-ClusteredScheduledTask: obtiene información sobre las tareas programadas registradas en un clúster de Windows Server.
+Get-ScheduledTask: obtiene información sobre las tareas programadas existentes en un sistema Windows.
+Get-ScheduledTaskInfo: obtiene información detallada sobre una tarea programada específica.
+New-ScheduledTask: crea una nueva tarea programada.
+New-ScheduledTaskAction: define la acción que se realizará en una tarea programada.
+New-ScheduledTaskPrincipal: define la identidad que se utilizará para ejecutar una tarea programada.
+New-ScheduledTaskSettingsSet: define los ajustes de una tarea programada.
+New-ScheduledTaskTrigger: define el desencadenador que activará una tarea programada.
+Register-ClusteredScheduledTask: registra una tarea programada en un clúster de Windows Server.
+Register-ScheduledTask: registra una tarea programada en un sistema Windows.
+Set-ClusteredScheduledTask: modifica las propiedades de una tarea programada registrada en un clúster de Windows Server.
+Set-ScheduledTask: modifica las propiedades de una tarea programada existente.
+Start-ScheduledTask: inicia una tarea programada.
+Stop-ScheduledTask: detiene una tarea programada.
+Unregister-ClusteredScheduledTask: elimina una tarea programada registrada en un clúster de Windows Server.
+Unregister-ScheduledTask: elimina una tarea programada existente en un sistema Windows.
 #>
 
 
