@@ -49,7 +49,7 @@ Opciones Trigger
  
 On a Schedule: en base a una programación, en este caso debemos seleccionar los días, fecha y hora en la cual la tarea se lanzará
 At log on: es una tarea que se ejecuta cuando el usuario inicia sesión en el equipo
-At startup: este permite que la tarea se ejecute cal momento de iniciar el equipo
+At startup: este permite que la tarea se ejecute cada momento de iniciar el equipo
 On idle: es una tarea que se ejecuta cuando el equipo está en un estado inactivo
 On an evento: permite ejecutar la tarea cuando suceda un evento en el sistema
  # 
@@ -102,7 +102,8 @@ Get-ScheduledTaskInfo -TaskName "Mis_Tareas_Programadas\AbrirChrome2"
  Get-Command Export-ScheduledTask -Syntax
 #>
 Export-ScheduledTask -TaskName 'AbreChrome' -TaskPath "\Mis_Tareas_Programadas\" > export.xml
-
+#Tambien podemos redirigir el xml mediante Out-file Redirigiendolo con un pipe |
+Export-ScheduledTask -TaskName  'AbreChrome' -TaskPath "\Mis_Tareas_Programadas\" | Out-File c:\tareaplanificada.xml
 <#
 Paso 14 - Eliminar una tarea
 Para eliminar la tarea cuando ya no sea más necesaria, vamos a listar la tarea a borrar con el siguiente comando:
@@ -123,3 +124,9 @@ $xml = Get-Content -Path "C:\Users\Administrador.WIN-93TPJQ1C048\export.xml"  | 
 #Write-Host $xml
 Register-ScheduledTask -Xml $xml -TaskName "AbrirChrome2" -TaskPath "\Mis_Tareas_Programadas"
 
+<#
+Paso 16 - Habilitar o Deshabilitar tareas planificadas
+Mediante los cmdlets Disable-ScheduledTask o Enable-ScheduledTask
+#>
+Disable-ScheduledTask -TaskName AbrirNavegadorNuevo -TaskPath "\M6UF2"
+Enable-ScheduledTask -TaskName AbrirNavegadorNuevo -TaskPath "\M6UF2"
