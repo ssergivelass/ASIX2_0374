@@ -53,4 +53,17 @@ Write-host "Este es el CSV $csv y este es el log $log"
 accion $csv $log
 Write-host "Seguimos ejecutando la estructura del script despues de la ejecución de la función"
 Write-host "Si volvemos a invocar la función volverá a ser ejecutada."
+
 accion 
+
+function Multiplicar {
+    param(
+        [int]$A,
+        [int]$B
+    )
+    return ($A * $B)
+}
+
+# Guardamos el resultado en una variable
+$Resultado = Multiplicar -A 4 -B 3
+Write-Host "El resultado es $Resultado"
