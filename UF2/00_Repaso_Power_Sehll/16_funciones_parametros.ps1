@@ -67,3 +67,48 @@ function Multiplicar {
 # Guardamos el resultado en una variable
 $Resultado = Multiplicar -A 4 -B 3
 Write-Host "El resultado es $Resultado"
+
+#Uso de parámetro MANDATORY
+# ---------------------------------------------
+# Esta función pide dos datos: un nombre (texto) y una edad (número).
+# Ambos son parámetros obligatorios. Si el usuario no los indica al llamar
+# a la función, PowerShell los solicitará automáticamente.
+# ---------------------------------------------
+
+function Saludar {
+
+    # Activa las características avanzadas de PowerShell.
+    # Esto convierte la función en una "función avanzada",
+    # lo que permite usar validaciones y parámetros como los cmdlets del sistema.
+    [CmdletBinding()]
+
+    # Definimos los parámetros que la función necesita para funcionar.
+    param(
+
+        # Primer parámetro: 'Nombre'
+        # - 'Mandatory = $true' indica que es obligatorio.
+        # - '[string]' indica que debe ser texto.
+        [Parameter(Mandatory = $true)]
+        [string]$Nombre, 
+
+        # Segundo parámetro: 'edad'
+        # - 'Mandatory' (sin = $true) también se interpreta como "obligatorio".
+        # - '[int]' indica que el valor debe ser un número entero.
+        [Parameter(Mandatory)]
+        [int]$edad
+    )
+
+    # Mostramos un mensaje personalizado en pantalla.
+    # En este ejemplo, usamos solo el nombre, pero podríamos incluir la edad también.
+    Write-Host "¡Hola, $Nombre! Espero que tengas un gran día 😊"
+}
+
+# ---------------------------------------------
+# EJECUCIÓN DE LA FUNCIÓN
+# ---------------------------------------------
+
+# Aquí llamamos a la función SIN pasar los parámetros.
+# Como ambos son obligatorios, PowerShell pedirá que el usuario los introduzca uno por uno.
+Saludar
+
+
