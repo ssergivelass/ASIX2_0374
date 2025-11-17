@@ -6,22 +6,33 @@ New-Item -Path c:\compartida\ASIX2 -ItemType Directory
 New-Item -Path c:\compartida\ASIX2\M6 -ItemType Directory
 
 #Mostrar els permisos per un directori determinat.
-Get-Acl -Path c:\compartida\ASIX2 | fl
+Get-Acl -Path 'C:\tmp\ASIX2'
+Get-Acl -Path 'C:\tmp\ASIX2' | fl *
 #Podem filtrar les sortides de comandes segons la dada que nosaltres necessitem:
 $(Get-Acl -Path c:\compartida\ASIX2).Owner
 (Get-Acl -Path c:\compartida\ASIX2).Owner
-
+(Get-Acl -Path 'C:\tmp\ASIX2').Owner
 #Amb icacls també podem veure els permisos d'un directori.
 icacls c:\compartida\
+# Per veure major informació sobre icacls --> icacls /?
+#els drets d'herència poden precedir a qualsevol forma i s'apliquen només a directoris:
+#(OI) - herència d'objecte
+#(CI) - herència de contenidor
+#(IO) - només herència
+#(NP) - no propagar herència
+#(I) - permís heretat del contenidor principal
 
 #Eliminar la herencia d'un directori mantenint els objetos:
 icacls c:\compartida /inheritancelevel:d
 
+#    /inheritance:e|d|r
+#        e - habilita la herencia
+#        d - deshabilita la herencia y copia las ACE
+#        r - quita todas las ACE heredadas
+
 #Eliminar els permisos per defecte 
 icacls c:\compartida /remove "BUILTIN\Usuarios"
 icacls c:\compartida
-
-
 
 #Mostrar si un directori te activa l'herencia.
 $acl = Get-Acl -Path c:\compartida\ASIX2
@@ -101,3 +112,4 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 
 $ACL | Set-Acl -Path C:\compartida\ASIX2
+
