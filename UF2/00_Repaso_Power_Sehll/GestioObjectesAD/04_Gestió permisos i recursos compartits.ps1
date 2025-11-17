@@ -14,7 +14,7 @@ $(Get-Acl -Path c:\compartida\ASIX2).Owner
 #Amb icacls també podem veure els permisos d'un directori.
 icacls c:\compartida\
 
-#Eliminar la herencia de un directorio manteniendo los objetos:
+#Eliminar la herencia d'un directori mantenint els objetos:
 icacls c:\compartida /inheritancelevel:d
 
 #Eliminar els permisos per defecte 
@@ -33,16 +33,16 @@ New-ADUser -Name "severo" -SamAccountName "severo" -AccountPassword $contra  -En
 Get-ADUser severo
 
 #Passos per l'assignació de permisos a un directori
-# Obtiene la ACL actual de la carpeta especificada.
+# 1. Obté la ACL actual de la carpeta especificada.
 $dir = Get-Acl -Path C:\compartida\ASIX2
 
-# Crea una nueva regla de acceso (solo lectura) para el grupo GG_P_ASIX1.
+# 2. Crea una nova regla d'accés (només lectura) per al grup GG_P_ASIX1.
 $nuevopermiso = New-Object System.Security.AccessControl.FileSystemAccessRule("severo", "Write", "Allow")
 
-# Añade la nueva regla de acceso a la ACL obtenida.
+# Afegeix la nova regla d'accés a la ACL obtinguda.
 $dir.SetAccessRule($nuevopermiso)
 
-# Aplica la ACL modificada a la carpeta, actualizando sus permisos.
+# Aplica la ACL modificada a la carpeta, actualitzant els seus permisos.
 $dir | Set-Acl -Path C:\compartida\ASIX2
 
 
@@ -51,16 +51,16 @@ $dir | Set-Acl -Path C:\compartida\ASIX2
 #Veure els recursos compartits del servidor:
 Get-SmbShare
 
-#Agregar nuevo recurso compartido.
+#Agregar nou recurs compartit.
 New-SmbShare -Name compartida_asix2 -Path "C:\compartida\ASIX2" -FullAccess severo
-#Ver los usuarios que tienen acceso.
+#Veure els usuaris que tenen accés.
 Get-SmbShareAccess -Name compartida_asix2
-#Añadir nuevo usuario
+#Afegir nou usuari
 Grant-SmbShareAccess -Name compartida_asix2 -AccountName severo -AccessRight Read
-#Borrar recurso
+#Borrar recursos
 Remove-SmbShare -Name compartida_asix2
 
-#Aplicar permisos solo a subcarpetas y archivos (no al directorio raíz):
+#Aplicar permisos sol a subcarpetas i arxius (no al directori arrel):
 $ACL = Get-ACL -Path C:\compartida\ASIX2
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     "severo",
@@ -75,7 +75,7 @@ $ACL | Set-Acl -Path C:\compartida\ASIX2
 
 Get-Acl -Path C:\compartida\ASIX2\M6 | fl
 
-#Aplicar permisos a esta carpeta, subcarpetas y archivos (sin detener la herencia):
+#Aplicar permisos a aquesta carpeta, subcarpetas i arxius (sense detenir l'herència):
 $ACL = Get-ACL -Path C:\compartida\ASIX2\
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     "severo",
@@ -87,8 +87,8 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 $ACL | Set-Acl -Path C:\compartida\ASIX2
 
-#Aplicar permisos y detener la herencia:
-#Uso de NoPropagateInherit para que los permisos no se propaguen más allá de un nivel.
+#Aplicar permisos i detenir l'herència:
+#Ús de NoPropagateInherit perquè els permisos no es propaguin més enllà d'un nivell.
 
 $ACL = Get-ACL -Path C:\compartida\ASIX2
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
@@ -99,4 +99,5 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     "Allow"
 )
 $ACL.SetAccessRule($AccesRule)
+
 $ACL | Set-Acl -Path C:\compartida\ASIX2
