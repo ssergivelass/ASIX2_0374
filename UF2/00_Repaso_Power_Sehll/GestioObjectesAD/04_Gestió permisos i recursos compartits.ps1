@@ -22,7 +22,7 @@ icacls c:\compartida\
 #(NP) - no propagar herència
 #(I) - permís heretat del contenidor principal
 
-#Eliminar la herencia d'un directori mantenint els objetos:
+#1. Eliminar la herencia d'un directori mantenint els objetos:
 icacls c:\compartida /inheritancelevel:d
 
 #    /inheritance:e|d|r
@@ -30,7 +30,7 @@ icacls c:\compartida /inheritancelevel:d
 #        d - deshabilita la herencia y copia las ACE
 #        r - quita todas las ACE heredadas
 
-#Eliminar els permisos per defecte 
+#2. Eliminar els permisos per defecte 
 icacls c:\compartida /remove "BUILTIN\Usuarios"
 icacls c:\compartida
 
@@ -43,35 +43,36 @@ $contra = ConvertTo-SecureString “QWEqwe123" -AsPlainText -Force
 New-ADUser -Name "severo" -SamAccountName "severo" -AccountPassword $contra  -Enabled $false
 Get-ADUser severo
 
-#Passos per l'assignació de permisos a un directori
-# 1. Obté la ACL actual de la carpeta especificada.
+#3. Passos per l'assignació de permisos a un directori
+# 3.1. Obté la ACL actual de la carpeta especificada.
 $dir = Get-Acl -Path C:\compartida\ASIX2
 
-# 2. Crea una nova regla d'accés (només lectura) per al grup GG_P_ASIX1.
+# 3.2. Crea una nova regla d'accés (només lectura) per al grup GG_P_ASIX1.
 $nuevopermiso = New-Object System.Security.AccessControl.FileSystemAccessRule("severo", "Write", "Allow")
 
-# Afegeix la nova regla d'accés a la ACL obtinguda.
+# 3.3. Afegeix la nova regla d'accés a la ACL obtinguda.
 $dir.SetAccessRule($nuevopermiso)
 
-# Aplica la ACL modificada a la carpeta, actualitzant els seus permisos.
+# 3.4. Aplica la ACL modificada a la carpeta, actualitzant els seus permisos.
 $dir | Set-Acl -Path C:\compartida\ASIX2
 
 
-#Compartició d'un recurs
+#4. Compartició d'un recurs
 
 #Veure els recursos compartits del servidor:
 Get-SmbShare
 
-#Agregar nou recurs compartit.
+#4.1. Agregar nou recurs compartit.
 New-SmbShare -Name compartida_asix2 -Path "C:\compartida\ASIX2" -FullAccess severo
 #Veure els usuaris que tenen accés.
 Get-SmbShareAccess -Name compartida_asix2
-#Afegir nou usuari
+#4.2. fegir nou usuari
 Grant-SmbShareAccess -Name compartida_asix2 -AccountName severo -AccessRight Read
 #Borrar recursos
 Remove-SmbShare -Name compartida_asix2
 
-#Aplicar permisos sol a subcarpetas i arxius (no al directori arrel):
+# CONTROL DE PROPAGACIÓ DE PERMISOS:
+#1. Aplicar permisos sol a subcarpetas i arxius (no al directori arrel):
 $ACL = Get-ACL -Path C:\compartida\ASIX2
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     "severo",
@@ -86,7 +87,7 @@ $ACL | Set-Acl -Path C:\compartida\ASIX2
 
 Get-Acl -Path C:\compartida\ASIX2\M6 | fl
 
-#Aplicar permisos a aquesta carpeta, subcarpetas i arxius (sense detenir l'herència):
+#2. Aplicar permisos a aquesta carpeta, subcarpetas i arxius (sense detenir l'herència):
 $ACL = Get-ACL -Path C:\compartida\ASIX2\
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
     "severo",
@@ -98,7 +99,7 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 $ACL | Set-Acl -Path C:\compartida\ASIX2
 
-#Aplicar permisos i detenir l'herència:
+#3. Aplicar permisos i detenir l'herència:
 #Ús de NoPropagateInherit perquè els permisos no es propaguin més enllà d'un nivell.
 
 $ACL = Get-ACL -Path C:\compartida\ASIX2
@@ -112,4 +113,5 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 
 $ACL | Set-Acl -Path C:\compartida\ASIX2
+
 
