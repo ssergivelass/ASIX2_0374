@@ -22,7 +22,7 @@ Get-ADOrganizationalUnit -Filter * -SearchBase "OU=Gestio,DC=m6ad,DC=local" | ft
 
 #Usuaris
 #Creació usuaris
-New-ADUser -Name "Joan Martínez" -SamAccountName "jmartinez" -DisplayName "Joan Martínez" -AccountPassword (ConvertTo-SecureString "ContrasenyaSegura123!" -AsPlainText -Force) -Path "OU=RRHH,OU=Gestio,DC=m6ad,DC=local" -Enabled $true -ChangePasswordAtLogon $true -CannotChangePassword $false -PasswordNeverExpires $false
+New-ADUser -Name "Joan Martínez" -SamAccountName "jmartinez" -DisplayName "Joan Martínez" -AccountPassword (ConvertTo-SecureString "ContrasenyaSegura123!" -AsPlainText -Force) -Path "OU=RRHH,OU=Gestio,DC=m6ad,DC=local" -Enabled $true -ChangePasswordAtLogon $true -CannotChangePassword $false -PasswordNeverExpires $false -ScriptPath "05_mapeo_uniades.bat"
 
 #Mostrar Usuari creat
 Get-ADUser -Filter "SamAccountName -eq 'jmartinez'" | fl *
@@ -53,4 +53,5 @@ Add-ADGroupMember -Identity "RecursosHumanos" -Members rdominguez,clopez
 
 #Mostrem els usuaris del grup
 Get-ADGroupMember -Identity "RecursosHumanos"
+
 
