@@ -43,7 +43,7 @@ $contra = ConvertTo-SecureString “QWEqwe123" -AsPlainText -Force
 New-ADUser -Name "severo" -SamAccountName "severo" -AccountPassword $contra  -Enabled $false
 Get-ADUser severo
 
-#3. Passos per l'assignació de permisos a un directori
+#3. Passos per l'assignació de permisos a un directori (Gestió Permisos NTFS)
 # 3.1. Obté la ACL actual de la carpeta especificada.
 $dir = Get-Acl -Path C:\compartida\ASIX2
 
@@ -57,7 +57,7 @@ $dir.SetAccessRule($nuevopermiso)
 $dir | Set-Acl -Path C:\compartida\ASIX2
 
 
-#4. Compartició d'un recurs
+#4. Compartició d'un recurs (PCC)
 
 #Veure els recursos compartits del servidor:
 Get-SmbShare
@@ -113,5 +113,6 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 
 $ACL | Set-Acl -Path C:\compartida\ASIX2
+
 
 
