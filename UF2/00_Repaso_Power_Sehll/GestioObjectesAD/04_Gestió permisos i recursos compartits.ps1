@@ -48,6 +48,8 @@ Get-ADUser severo
 $dir = Get-Acl -Path C:\compartida\ASIX2
 
 # 3.2. Crea una nova regla d'accés (només lectura) per al grup GG_P_ASIX1.
+Llistat complert amb tots els permisos que es poden assignar: https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemrights?view=net-9.0
+
 $nuevopermiso = New-Object System.Security.AccessControl.FileSystemAccessRule("severo", "Write", "Allow")
 
 # 3.3. Afegeix la nova regla d'accés a la ACL obtinguda.
@@ -72,6 +74,9 @@ Grant-SmbShareAccess -Name compartida_asix2 -AccountName severo -AccessRight Rea
 Remove-SmbShare -Name compartida_asix2
 
 # CONTROL DE PROPAGACIÓ DE PERMISOS:
+En el següent enllaç torbareu els constructors per gestionar la propagació d'herencia:
+https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemaccessrule?view=net-10.0
+
 #1. Aplicar permisos sol a subcarpetas i arxius (no al directori arrel):
 $ACL = Get-ACL -Path C:\compartida\ASIX2
 $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
@@ -113,6 +118,7 @@ $AccesRule = New-Object System.Security.AccessControl.FileSystemAccessRule(
 $ACL.SetAccessRule($AccesRule)
 
 $ACL | Set-Acl -Path C:\compartida\ASIX2
+
 
 
 
