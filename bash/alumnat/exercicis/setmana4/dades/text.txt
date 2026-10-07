@@ -1,0 +1,7 @@
+El servidor web s'ha reiniciat a les 8:00.
+L'usuari anna ha iniciat sessió.
+Error: no s'ha pogut connectar amb el servidor de còpies.
+L'usuari pau ha iniciat sessió.
+Error: disc ple a /var.
+L'usuari anna ha tancat la sessió.
+El servidor de còpies torna a funcionar.

@@ -1,0 +1,34 @@
+# -*- mode: ruby -*-
+# Màquina de treball de la unitat de scripting Bash (ASIX2 · 0374)
+#
+#   vagrant up        -> crea i arrenca la màquina (la primera vegada triga uns minuts)
+#   vagrant ssh       -> entra a la màquina
+#   vagrant halt      -> apaga la màquina
+#   vagrant destroy   -> esborra la màquina (els fitxers de /vagrant NO s'esborren)
+#
+# La carpeta on hi ha aquest fitxer es veu dins la màquina com a /vagrant.
+
+Vagrant.configure("2") do |config|
+  # Debian 12 amb les Guest Additions de VirtualBox (carpeta compartida en directe)
+  config.vm.box = "bento/debian-12"
+  config.vm.hostname = "bash-asix2"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "bash-asix2"
+    vb.memory = 1024
+    vb.cpus = 1
+  end
+
+  # Carpeta compartida: permisos d'execució per als scripts encara que l'amfitrió sigui Windows
+  config.vm.synced_folder ".", "/vagrant", mount_options: ["dmode=775", "fmode=775"]
+
+  config.vm.provision "shell", inline: <<-SHELL
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update -y
+    apt-get install -y nano tree dos2unix shellcheck
+    timedatectl set-timezone Europe/Madrid || true
+    # En entrar per SSH, començar directament a la carpeta compartida
+    grep -q "cd /vagrant" /home/vagrant/.bashrc || echo "cd /vagrant" >> /home/vagrant/.bashrc
+    echo "Màquina preparada. Entra amb: vagrant ssh"
+  SHELL
+end
